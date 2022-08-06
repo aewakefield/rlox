@@ -1,13 +1,18 @@
 mod chunk;
+mod value;
 
 use std::io;
 
 use chunk::{Chunk, OpCode};
+use value::Value;
 
-fn main() {
+fn main() -> io::Result<()> {
     let mut chunk = Chunk::default();
-    chunk.write(OpCode::Return);
-    chunk.write(OpCode::Return);
+    let position = chunk.add_constant(Value::Number(42.0));
+    chunk.write(OpCode::Constant(position), 1);
+    let position = chunk.add_constant(Value::Number(1.2));
+    chunk.write(OpCode::Constant(position), 1);
+    chunk.write(OpCode::Return, 2);
 
-    chunk.dissassemble("test chunk", &mut io::stdout()).unwrap();
+    chunk.disassemble("test chunk", &mut io::stdout())
 }
