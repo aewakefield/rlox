@@ -1,3 +1,13 @@
+mod chunk;
+
+use std::io;
+
+use chunk::{Chunk, OpCode};
+
 fn main() {
-    println!("Hello, world!");
+    let mut chunk = Chunk::default();
+    chunk.write(OpCode::Return);
+    chunk.write(OpCode::Return);
+
+    chunk.dissassemble("test chunk", &mut io::stdout()).unwrap();
 }
