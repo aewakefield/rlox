@@ -14,7 +14,7 @@ pub enum Value {
 pub struct Values(Vec<Value>);
 
 /// Position of value in [`Values`].
-#[derive(PartialEq)]
+#[derive(PartialEq, Eq)]
 pub struct ValuePosition(usize);
 
 impl Values {

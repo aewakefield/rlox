@@ -3,7 +3,7 @@ use std::io;
 use crate::value::{Value, ValuePosition, Values};
 
 /// Instruction to carry out a particular operation.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum OpCode {
     /// Load a constant for use.
     Constant(ValuePosition),
