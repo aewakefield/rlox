@@ -41,6 +41,16 @@ pub struct Chunk {
 }
 
 impl Chunk {
+    /// Get instructions in this chunk.
+    pub fn ops(&self) -> &[OpCode] {
+        &self.ops
+    }
+
+    /// Get constant at provided position.
+    pub fn constant(&self, position: &ValuePosition) -> &Value {
+        self.constants.get(position)
+    }
+
     /// Add an instruction to this chunk and records the line of source code this instruction came from.
     pub fn write(&mut self, op_code: OpCode, line: usize) {
         self.ops.push(op_code);
@@ -76,6 +86,32 @@ impl Chunk {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn chunk_ops_returns_ops() {
+        let chunk = Chunk {
+            ops: vec![OpCode::Return],
+            ..Default::default()
+        };
+
+        let ops = chunk.ops();
+
+        assert_eq!(ops, [OpCode::Return]);
+    }
+
+    #[test]
+    fn chunk_constant_returns_constant() {
+        let mut constants = Values::default();
+        let position = constants.write(Value::Nil);
+        let chunk = Chunk {
+            constants,
+            ..Default::default()
+        };
+
+        let constant = chunk.constant(&position);
+
+        assert_eq!(*constant, Value::Nil);
+    }
 
     #[test]
     fn chunk_write_opcode_adds_op_and_line_number() {
