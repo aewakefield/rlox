@@ -1,10 +1,11 @@
 use std::fmt;
 
 /// Constant value that appears as literal in program.
-#[derive(PartialEq)]
+#[derive(Clone, Default, PartialEq)]
 pub enum Value {
     /// Constant number for example `4.2`.
     Number(f64),
+    #[default]
     /// Empty value literal value is `nil`.
     Nil,
 }
