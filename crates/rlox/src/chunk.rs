@@ -13,10 +13,10 @@ pub enum OpCode {
 
 impl OpCode {
     /// Write the instruction in disassembly format.
-    fn disassemble(&self, writer: &mut impl io::Write, constants: &Values) -> io::Result<()> {
+    pub fn disassemble(&self, writer: &mut impl io::Write, chunk: &Chunk) -> io::Result<()> {
         match self {
             Self::Constant(position) => {
-                let value = constants.get(position);
+                let value = chunk.constant(position);
                 let name = "OP_CONSTANT";
                 write!(writer, "{name:16} {position:04?} '{value:?}'")
             }
@@ -75,7 +75,7 @@ impl Chunk {
                 write!(writer, "{line:4} ")?;
                 last_line = Some(line);
             }
-            op.disassemble(writer, &self.constants)?;
+            op.disassemble(writer, self)?;
             writeln!(writer)?;
         }
 
